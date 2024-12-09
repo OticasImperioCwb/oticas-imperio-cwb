@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Óticas Império Cwb - Acompanhamento de Pedidos</title>
+    <!-- Link do FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(to right, #c7952c, #ddb42b, #e3dc6e);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        header img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        .status-container {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .status-step {
+            text-align: center;
+            padding: 15px;
+            width: 200px;
+            border-radius: 5px;
+            margin: 10px;
+            color: white;
+        }
+
+        /* Estilos para as bandeiras usando FontAwesome */
+        .status-step.em-montagem {
+            background-color: red;
+        }
+
+        .status-step.produto-montado {
+            background-color: orange;
+        }
+
+        .status-step.produto-em-loja {
+            background-color: green;
+        }
+
+        .status-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            margin: 20px 0;
+        }
+
+        .status-line div {
+            position: relative;
+            text-align: center;
+        }
+
+        /* Ícones de bandeira */
+        .step-circle {
+            font-size: 50px; /* Tamanho do ícone */
+            margin: 0 auto;
+        }
+
+        .status-line .step-line {
+            width: 50px;
+            height: 4px;
+            background-color: #e0e0e0;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="logo.png" alt="Óticas Império Cwb">
+        <h1>Óticas Império Cwb - Acompanhe seu Pedido</h1>
+    </header>
+
+    <!-- Acompanhamento de Pedidos -->
+    <div class="status-container">
+        <h2>Acompanhamento do Pedido</h2>
+
+        <!-- Linha do Tempo de Status -->
+        <div class="status-line">
+            <div class="status-step em-montagem">
+                <i class="fas fa-flag" style="color: red;"></i>
+                <p>Em Montagem</p>
+            </div>
+            <div class="step-line"></div>
+            <div class="status-step produto-montado">
+                <i class="fas fa-flag" style="color: orange;"></i>
+                <p>Produto Montado</p>
+            </div>
+            <div class="step-line"></div>
+            <div class="status-step produto-em-loja">
+                <i class="fas fa-flag" style="color: green;"></i>
+                <p>Produto em Loja</p>
+            </div>
+        </div>
+
+        <!-- Detalhes das Etapas -->
+        <div class="status-step em-montagem">
+            <h3>Em Montagem</h3>
+            <p>Seu pedido está sendo encaminhado para o laboratório.</p>
+        </div>
+        <div class="status-step produto-montado">
+            <h3>Produto Montado</h3>
+            <p>Seu pedido foi montado e está pronto para a próxima etapa.</p>
+        </div>
+        <div class="status-step produto-em-loja">
+            <h3>Produto em Loja</h3>
+            <p>Seu pedido foi montado e está pronto para retirada na loja.</p>
+        </div>
+    </div>
+
+    <!-- Login -->
+    <div class="login-container">
+        <h2>Login Cliente</h2>
+        <input type="text" id="username" placeholder="Nome de usuário">
+        <input type="password" id="password" placeholder="Senha">
+        <button onclick="login()">Entrar</button>
+        <p id="error-message" style="color: red;"></p>
+    </div>
+
+    <!-- Opções após login -->
+    <div class="options-container" style="display: none;">
+        <h2>Bem-vindo!</h2>
+        <button onclick="verAcompanhamento()">Acompanhar Status do Pedido</button>
+        <button onclick="verHistorico()">Histórico de Compras</button>
+        <button onclick="logout()">Sair</button>
+    </div>
+
+    <!-- Histórico de Compras -->
+    <div class="historico-container" style="display: none;">
+        <h2>Histórico de Compras</h2>
+        <ul>
+            <li>Compra 1: 12/11/2024</li>
+            <li>Compra 2: 25/10/2024</li>
+        </ul>
+        <button onclick="voltar()">Voltar</button>
+    </div>
+
+    <!-- Painel Administrador -->
+    <div class="admin-container" style="display: none;">
+        <h2>Painel de Administrador</h2>
+        <h3>Alterar Status do Pedido</h3>
+        <select id="order-select">
+            <option value="1">Pedido Cliente 1</option>
+            <option value="2">Pedido Cliente 2</option>
+        </select>
+        <select id="status-select">
+            <option value="em-montagem">Em Montagem</option>
+            <option value="produto-montado">Produto Montado</option>
+            <option value="pronto-para-retirada">Pronto para Retirada</option>
+        </select>
+        <button onclick="alterarStatus()">Alterar Status</button>
+        <button onclick="voltarAdmin()">Voltar</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Óticas Império Cwb - Todos os direitos reservados</p>
+        <p><a href="https://www.instagram.com/oticaimperiocwb" target="_blank">@oticaimperiocwb</a></p>
+        <p><a href="https://wa.me/5541996144500" target="_blank">Fale com nosso atendente pelo WhatsApp</a></p>
+    </footer>
+
+    <script>
+        // Banco de dados fictício de usuários
+        const users = [
+            { username: "cliente1", password: "senha1", orderId: 1 },
+            { username: "cliente2", password: "senha2", orderId: 2 }
+        ];
+
+        // Banco de dados fictício de pedidos
+        const orders = {
+            1: { status: "Em Montagem" },
+            2: { status: "Produto em Loja" }
+        };
+
+        // Função de login para cliente
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                localStorage.setItem("loggedInUser", JSON.stringify(user));
+                document.querySelector('.login-container').style.display = 'none';
+                document.querySelector('.options-container').style.display = 'block';
+            } else {
+                document.getElementById("error-message").innerText = "Usuário ou senha incorretos.";
+            }
+        }
+
+        // Função para ver o acompanhamento do pedido
+        function verAcompanhamento() {
+            const user = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (user) {
+                document.querySelector('.options-container').style.display = 'none';
+                document.querySelector('.status-container').style.display = 'block';
+            }
+        }
+
+        // Função para voltar ao menu de opções do cliente
+        function voltar() {
+            document.querySelector('.historico-container').style.display = 'none';
+            document.querySelector('.options-container').style.display = 'block';
+        }
+
+        // Função de logout
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            document.querySelector('.options-container').style.display = 'none';
+            document.querySelector('.login-container').style.display = 'block';
+        }
+
+        // Função para alterar o status do pedido (Admin)
+        function alterarStatus() {
+            const orderId = document.getElementById("order-select").value;
+            const status = document.getElementById("status-select").value;
+
+            orders[orderId].status = status;
+            alert("Status do pedido alterado para: " + status);
+        }
+
+        // Função para voltar ao painel de administração
+        function voltarAdmin() {
+            document.querySelector('.admin-container').style.display = 'none';
+            document.querySelector('.options-container').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
